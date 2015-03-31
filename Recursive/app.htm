@@ -1,0 +1,186 @@
+﻿<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Recursive</title>    
+    <link href="lib/jqueryplugins/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+    <script src="lib/jquery/jquery-1.7.2.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" /> 
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="lib/stats/stats.min.js"></script>    
+    <script src="lib/jqueryplugins/jqplugins.js"></script>
+    <script src="lib/box2dweb/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="lib/tsm/tsm-0.6.min.js"></script>    
+    <script src="lib/jqueryplugins/jquery.contextMenu.js" type="text/javascript"></script>
+    <script src="lib/zipjs/zip.js"></script>
+    <script src="lib/zipjs/zip-fs.js"></script>
+    <script src="lib/filesaver/filesaver.js"></script>
+    <script src="app/utils/helpers.js"></script>
+    <script src="app/utils/signals.js"></script>
+    <script src="app/utils/ImageCache.js"></script>
+    <script src="app/crawling/CrawlGraph.js"></script>
+    <script src="app/crawling/Crawler.js"></script>
+    <script src="app/crawling/CrawlerMocks.js"></script>
+    <script src="app/crawling/CrawlerSignals.js"></script>
+    <script src="app/crawling/CrawlerFile.js"></script>
+    <script src="app/crawling/CrawlingResultParser.js"></script>
+    <script src="app/controllers/FilesModalController.js"></script>
+    <script src="app/controllers/SettingsModalController.js"></script>
+    <script src="app/controllers/TopBarController.js"></script>
+    <script src="app/controllers/ContextMenuController.js"></script>
+    <script src="app/controllers/HeroController.js"></script>
+    <script src="app/rendering/canvas2d/Anim.js"></script>
+    <script src="app/rendering/canvas2d/Physics.js"></script>
+    <script src="app/rendering/canvas2d/RenderNode.js"></script>    
+    <script src="app/rendering/canvas2d/PhysicsRenderNode.js"></script>    
+    <script src="app/rendering/canvas2d/Renderer.js"></script>
+    <script src="app/rendering/canvas2d/Camera.js"></script>
+    <script src="app/rendering/canvas2d/FileNode.js"></script>
+    <script src="app/rendering/canvas2d/HostNode.js"></script>
+    <script src="app/rendering/canvas2d/IconSheet.js"></script>
+    <script src="app/rendering/canvas2d/PageNode.js"></script>            
+    <script src="app.js"></script>
+</head>
+<body>
+
+    <canvas id="mainRenderCanvas"></canvas>    
+  
+    <div class="container navbar-wrapper" style="padding-left: 40px">
+
+      <div id="topBar" class="navbar" style="display: none;">
+        <div class="navbar-inner">
+          <a id="topLogo" class="brand" href="http://www.mikecann.co.uk">Recursive</a>
+            <ul class="nav">
+                <li>
+                    <form class="navbar-form">
+                        <div class="input-append">
+                            <input id="urlInput" class="span5" type="text" placeholder="e.g. http://mikecann.co.uk" value="http://www.typescriptlang.org/" />
+                            <button id="goBtn" class="btn btn-success" type="submit"><i class="icon-globe icon-white"></i></button>
+                        </div>                        
+                    </form>                    
+                </li>                
+            </ul>
+            <ul class="nav pull-left">
+                <li>
+                    <button id="resetBtn" rel="tooltip" data-placement="bottom" data-original-title="Reset" class="btn"><i class="icon-refresh"></i></button>
+                </li>
+                <li style="padding-left: 10px" class="nav" >                    
+                    <button id="settingsBtn" rel="tooltip" data-placement="bottom" data-original-title="Settings" class="btn"><i class="icon-wrench" ></i></button>
+                </li>
+                <li class="nav" style="margin-right: 0px" >                    
+                    <button id="fullscreenBtn" rel="tooltip" data-placement="bottom" data-original-title="Fullscreen" class="btn"><i class="icon-fullscreen" ></i></button>
+                </li>
+            </ul>
+
+           
+        </div><!-- /.navbar-inner -->
+      </div><!-- /.navbar -->
+
+    </div> 
+    
+    <div class="modal hide" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Files</h3>
+        </div>
+
+        <div class="modal-body" style="border-bottom: 1px solid #EEE;">
+            <ul class="nav nav-pills" style="margin-bottom:0px;">
+              <li class="active">
+                <a id="imagesPill" href="#"><i class="icon-picture"></i> Images</a>
+              </li>
+              <li class="active">
+                <a id="soundPill" href="#"><i class="icon-music"></i> Sound</a>
+              </li>
+              <li class="active">
+                <a id="videoPill" href="#"><i class="icon-film"></i> Video</a>
+              </li>
+              <li class="active">
+                <a id="binaryPill" href="#"><i class="icon-briefcase"></i> Binary</a>
+              </li>
+              <li class="active">
+                <a id="otherPill" href="#"><i class="icon-file"></i> Other</a>
+              </li>
+              <li class="active">
+                <a id="userPill" href="#"><i class="icon-user"></i> User</a>
+              </li>
+            </ul>  
+        </div>
+        
+        <div class="modal-body">        
+            <div class="list-of-files">
+                <p>one fine body</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="openPage" class="btn">Open Page</button>
+            <button id="downloadAllBtn" class="btn btn-primary">Download All</button>
+            <div id="downloadProgress" style="display: none; margin-bottom:0px" class="progress progress-striped active">
+                <div class="bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal hide" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="H1">Settings</h3>
+        </div>
+        <div class="modal-body">
+            <label>Max Crawl Depth:</label>
+            <input id="maxDepthInp" type="text" value="0" class="span1"  />
+            <label class="checkbox" style="margin-top:10px">
+              <input id="showFPSChk" type="checkbox"> Show FPS
+            </label>
+            <label class="checkbox" style="margin-top:10px">
+              <input id="showDebugCirclesChk" type="checkbox"> Show Debug Circles
+            </label>
+            <label class="checkbox" style="margin-top:10px">
+              <input id="removeDuplicateFilesChk" type="checkbox"> Remove Duplicate Files
+            </label>
+            <label>Custom File Filter Regex:<a id="userFilesRegexTip" rel="tooltip" data-placement="top" data-original-title="Use a regular expression to define a custom file or string to look for when recursing. It will find ALL matching strings">?</a></label>            
+            <input id="userFilesRegex" type="text" value="" class="span4"  />
+        </div>
+        <div class="modal-footer">
+            <button id="saveBtn" class="btn btn-primary">Save</button>
+            <div id="Div2" style="display: none; margin-bottom:0px" class="progress progress-striped active">
+                <div class="bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-container row-fluid" />         
+
+    <div class="container">
+
+        <div id="heroUnit" class="hero-unit">
+
+            <div class="row-fluid">
+              <div class="span9">
+                  <canvas id="treeCanvas"></canvas>
+                  <div>
+                      <h1>Welcome To Recursive</h1>
+                      <h4>Explore the endless web!</h4>
+                      <p style="margin-top: 30px">Recursive is an experiment in visualising the internet. Use it to explore the recursive nature of the world wide web. Click a node in the graph for more options. 
+                          If you like this and want to help out you can <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=mike.cann@gmail.com&item_name=Recursive by Mike Cann&currency_code=USD&amount=10.00">donate</a> or <a "mailto:mike.cann@gmail.com">email me</a>.
+                      </p>
+                      <p style="margin-top: 30px">      
+                          <form>
+                              <input id="heroRecurseSearchBox" type="text" class="input-large" placeholder="e.g. http://mikecann.co.uk">
+                              <button id="heroRecurseButton" type="submit" class="btn btn-primary btn-large">
+                                   Recurse
+                              </button>
+                          </form>                    
+                      </p>
+                  </div>           
+
+              </div>
+            </div>
+          
+        </div>
+    </div>
+    
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+﻿
+Why does it hang? (worker threads)
+No context menu on osx
+
+----- v.1.1 ------
+- Now only displays recursive icon on tabs with http:// and https://
+- Full screen now works (uncommented that line of code, doh!)
+- Pause and reseting a recurse now works correctly
+- Renamed the title page of the app
+- Some Performance improvments
+- There is now an option in the settings to define a custom file filter
+- There is now a setting to disable removing duplicate files
