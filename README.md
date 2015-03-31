@@ -4,7 +4,7 @@
 
 Recursive is an experimental tool for visualising the world wide web. Given a URL it downloads the page search for links and then recursively downloads those. The information is then displayed in a node-based graph.
 
-!(Recursive SS)http://mikecann.co.uk/wp-content/uploads/2012/12/Screenshot_001-1024x423.png)
+![Recursive SS]http://mikecann.co.uk/wp-content/uploads/2012/12/Screenshot_001-1024x423.png)
 
 Video
 -----
