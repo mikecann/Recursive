@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 class CrawlerMocks {
 
     static getRandomCompleteCrawler(parent: Crawler = null, url:string=null): Crawler {

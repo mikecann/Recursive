@@ -1,4 +1,4 @@
-module TSM {
+declare module TSM {
     export class vec3 {
         private values: Float32Array;
         public x : number;
@@ -11,7 +11,7 @@ module TSM {
         public reset(): void;
         public copy(dest?: vec3): vec3;
         public negate(): vec3;
-        public equals(vector: vec3): bool;
+        public equals(vector: vec3): boolean;
         public length(): number;
         public squaredLength(): number;
         public add(vector: vec3): vec3;
@@ -36,8 +36,7 @@ module TSM {
         static right: vec3;
         static forward: vec3;
     }
-}
-module TSM {
+
     export class vec4 {
         private values: Float32Array;
         public x : number;
@@ -59,7 +58,7 @@ module TSM {
         public reset(): void;
         public copy(dest?: vec4): vec4;
         public negate(): vec4;
-        public equals(vector: vec4): bool;
+        public equals(vector: vec4): boolean;
         public length(): number;
         public squaredLength(): number;
         public add(vector: vec4): vec4;
@@ -75,8 +74,8 @@ module TSM {
         static quotient(vector: vec4, vector2: vec4, result?: vec4): vec4;
         static zero: vec4;
     }
-}
-module TSM {
+
+
     export class mat2 {
         private values: Float32Array;
         constructor (values?: number[]);
@@ -87,7 +86,7 @@ module TSM {
         public all(): number[];
         public row(index: number): number[];
         public col(index: number): number[];
-        public equals(matrix: mat2): bool;
+        public equals(matrix: mat2): boolean;
         public determinant(): number;
         public setIdentity(): mat2;
         public transpose(): mat2;
@@ -99,8 +98,7 @@ module TSM {
         static product(m1: mat2, m2: mat2, result?: mat2): mat2;
         static identity: mat2;
     }
-}
-module TSM {
+
     export class mat3 {
         private values: Float32Array;
         constructor (values?: number[]);
@@ -111,7 +109,7 @@ module TSM {
         public all(): number[];
         public row(index: number): number[];
         public col(index: number): number[];
-        public equals(matrix: mat3): bool;
+        public equals(matrix: mat3): boolean;
         public determinant(): number;
         public setIdentity(): mat3;
         public transpose(): mat3;
@@ -124,8 +122,7 @@ module TSM {
         static product(m1: mat3, m2: mat3, result?: mat3): mat3;
         static identity: mat3;
     }
-}
-module TSM {
+
     export class mat4 {
         private values: Float32Array;
         constructor (values?: number[]);
@@ -136,7 +133,7 @@ module TSM {
         public all(): number[];
         public row(index: number): number[];
         public col(index: number): number[];
-        public equals(matrix: mat4): bool;
+        public equals(matrix: mat4): boolean;
         public determinant(): number;
         public setIdentity(): mat4;
         public transpose(): mat4;
@@ -156,8 +153,7 @@ module TSM {
         static product(m1: mat4, m2: mat4, result?: mat4): mat4;
         static identity: mat4;
     }
-}
-module TSM {
+
     export class quat {
         private values: Float32Array;
         public x : number;
@@ -174,7 +170,7 @@ module TSM {
         public roll(): number;
         public pitch(): number;
         public yaw(): number;
-        public equals(vector: vec4): bool;
+        public equals(vector: vec4): boolean;
         public setIdentity(): quat;
         public calculateW(): quat;
         static dot(q1: quat, q2: quat): number;
@@ -192,9 +188,9 @@ module TSM {
         static interpolate(q1: quat, q2: quat, time: number, result?: quat): quat;
         static identity: quat;
     }
-}
-var EPSILON: number;
-module TSM {
+
+    var EPSILON: number;
+
     export class vec2 {
         private values: Float32Array;
         public x : number;
@@ -205,7 +201,7 @@ module TSM {
         public reset(): void;
         public copy(dest?: vec2): vec2;
         public negate(): vec2;
-        public equals(vector: vec2): bool;
+        public equals(vector: vec2): boolean;
         public length(): number;
         public squaredLength(): number;
         public add(vector: vec2): vec2;

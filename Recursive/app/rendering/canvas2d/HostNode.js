@@ -1,7 +1,7 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var HostNode = (function (_super) {
     __extends(HostNode, _super);
@@ -16,10 +16,10 @@ var HostNode = (function (_super) {
         this.crawler = crawler;
         this.host = crawler.parsedUrl.host;
         this.parentNode = parentNode;
-        this.icon = images.getImage("http://g.etfv.co/http://" + encodeURI(this.host));
+        this.icon = images.getImage("http://www.google.com/s2/favicons?domain=" + encodeURI(this.host));
         this.pagesAndFilesCanvas = document.createElement("canvas");
         this.loadingAnim = new Anim(images.getImage("images/loader4.png", false), 128, 128);
-        if(parentNode) {
+        if (parentNode) {
             this.jointToParent = this.renderer.physics.createJoint(this.body, parentNode.body);
             this.updatePagesAndFiles(0);
             this.updatePhysics();
@@ -33,16 +33,10 @@ var HostNode = (function (_super) {
     HostNode.prototype.addPage = function (c) {
         var _this = this;
         var pn = new PageNode(c, this.renderer);
-        pn.requiresRefresh.add(function () {
-            return _this.updatePagesAndFiles(0);
-        });
+        pn.requiresRefresh.add(function () { return _this.updatePagesAndFiles(0); });
         this.children.push(pn);
-        c.files.forEach(function (cf) {
-            return _this.addFile(pn, cf);
-        });
-        c.fileAdded.add(function (cf) {
-            return _this.addFile(pn, cf);
-        });
+        c.files.forEach(function (cf) { return _this.addFile(pn, cf); });
+        c.fileAdded.add(function (cf) { return _this.addFile(pn, cf); });
         this.pagesAndFilesIsDirty = true;
     };
     HostNode.prototype.addFile = function (pn, cf) {
@@ -53,25 +47,25 @@ var HostNode = (function (_super) {
     };
     HostNode.prototype.updatePhysics = function () {
         this.totalRadius = this.radius;
-        if(this.childHostNodes.length > 0) {
+        if (this.childHostNodes.length > 0) {
+            // Sort them by size
             var sortedKids = this.childHostNodes.slice(0, this.childHostNodes.length);
             sortedKids.sort(function (a, b) {
-                if(a.totalRadius == b.totalRadius) {
+                if (a.totalRadius == b.totalRadius)
                     return a.childHostIndex - b.childHostIndex;
-                } else {
+                else
                     return a.totalRadius - b.totalRadius;
-                }
             });
             var islandDist = 10;
             var ang = 0;
             var layerSepp = islandDist;
             var last = sortedKids[0];
-            for(var i = 0; i < sortedKids.length; i++) {
+            for (var i = 0; i < sortedKids.length; i++) {
                 var child = sortedKids[i];
                 var len = child.totalRadius + this.radius + layerSepp;
                 var theta = Math.asin((child.totalRadius + islandDist) / len) * 2;
                 ang += theta;
-                if(ang >= Math.PI * 2) {
+                if (ang >= Math.PI * 2) {
                     ang = 0;
                     layerSepp += islandDist + (last.totalRadius * 2);
                 }
@@ -81,24 +75,24 @@ var HostNode = (function (_super) {
                 this.totalRadius = Math.max(this.totalRadius, len + child.totalRadius);
             }
         }
+        // Update the phyics body
         this.body.GetFixtureList().m_shape.m_radius = this.totalRadius / Physics.SCALE;
         this.body.ResetMassData();
     };
     HostNode.prototype.update = function (delta) {
         _super.prototype.update.call(this, delta);
         this.isLoading = false;
-        if(this.crawler.state == CrawlerSate.CRAWLING || this.someChildrenAreLoading) {
+        if (this.crawler.state == CrawlerSate.CRAWLING || this.someChildrenAreLoading)
             this.isLoading = true;
-        }
-        if(this.isLoading) {
+        if (this.isLoading)
             this.loadingAnim.update(delta);
-        }
-        if(this.pagesAndFilesIsDirty) {
+        if (this.pagesAndFilesIsDirty)
             this.updatePagesAndFiles(delta);
-        }
-        for(var i = 0; i < this.childHostNodes.length; i++) {
+        // this should be done only on change really!
+        //for (var i = 0; i < this.children.length; i++) this.children[i].update();
+        // If there are any child host nodes then update those now too
+        for (var i = 0; i < this.childHostNodes.length; i++)
             this.childHostNodes[i].update(delta);
-        }
         this.updatePhysics();
     };
     HostNode.prototype.updatePagesAndFiles = function (delta) {
@@ -106,7 +100,7 @@ var HostNode = (function (_super) {
         var k = 0;
         var sep = 8;
         this.someChildrenAreLoading = false;
-        for(var i = 0; i < this.children.length; i++) {
+        for (var i = 0; i < this.children.length; i++) {
             var p = this.children[i];
             p.update(delta);
             var circ = 2 * Math.PI * r;
@@ -115,22 +109,19 @@ var HostNode = (function (_super) {
             p.pos.x = Math.cos(j * (Math.PI / 180)) * r;
             p.pos.y = Math.sin(j * (Math.PI / 180)) * r;
             k++;
-            if((d * k) > 360) {
+            if ((d * k) > 360) {
                 r += 16;
                 k = 0;
             }
-            if(p instanceof PageNode) {
+            if (p instanceof PageNode) {
                 var page = p;
-                if(page.crawler.state == CrawlerSate.CRAWLING || page.crawler.handled) {
+                if (page.crawler.state == CrawlerSate.CRAWLING || page.crawler.handled)
                     this.someChildrenAreLoading = true;
-                }
             }
         }
         this.radius = r + (this.children.length == 0 ? 0 : 16);
         this.body.SetAwake(true);
-        this.childHostNodes.forEach(function (c) {
-            return c.body.SetAwake(true);
-        });
+        this.childHostNodes.forEach(function (c) { return c.body.SetAwake(true); });
         this.pagesAndFilesCanvas.width = this.radius * 2;
         this.pagesAndFilesCanvas.height = this.radius * 2;
         var c = this.pagesAndFilesCanvas.getContext("2d");
@@ -143,7 +134,7 @@ var HostNode = (function (_super) {
         c.stroke();
         c.fill();
         c.closePath();
-        for(var i = 0; i < this.children.length; i++) {
+        for (var i = 0; i < this.children.length; i++) {
             var p = this.children[i];
             p.pos.x += this.radius;
             p.pos.y += this.radius;
@@ -152,11 +143,10 @@ var HostNode = (function (_super) {
         this.pagesAndFilesIsDirty = false;
     };
     HostNode.prototype.renderLines = function (c) {
-        for(var i = 0; i < this.childHostNodes.length; i++) {
+        for (var i = 0; i < this.childHostNodes.length; i++)
             this.childHostNodes[i].renderLines(c);
-        }
         var screenP = this.pos.copy(Helpers.p1).add(this.cam.pos).scale(this.cam.scale);
-        for(var i = 0; i < this.childHostNodes.length; i++) {
+        for (var i = 0; i < this.childHostNodes.length; i++) {
             var child = this.childHostNodes[i];
             var childScreenP = child.pos.copy(Helpers.p2).add(this.cam.pos).scale(this.cam.scale);
             var diff = childScreenP.copy(Helpers.p3).subtract(screenP);
@@ -168,16 +158,18 @@ var HostNode = (function (_super) {
         }
     };
     HostNode.prototype.render = function (c) {
-        for(var i = 0; i < this.childHostNodes.length; i++) {
+        for (var i = 0; i < this.childHostNodes.length; i++)
             this.childHostNodes[i].render(c);
-        }
         var screenP = this.pos.copy(Helpers.p1).add(this.cam.pos).scale(this.cam.scale);
-        if(screenP.x < -this.radius * this.cam.scale || screenP.y < -this.radius * this.cam.scale || screenP.x > c.canvas.width + this.radius * this.cam.scale || screenP.y > c.canvas.height + this.radius * this.cam.scale) {
+        if (screenP.x < -this.radius * this.cam.scale || screenP.y < -this.radius * this.cam.scale ||
+            screenP.x > c.canvas.width + this.radius * this.cam.scale || screenP.y > c.canvas.height + this.radius * this.cam.scale)
             return;
-        }
         _super.prototype.render.call(this, c);
         c.drawImage(this.pagesAndFilesCanvas, (this.cam.pos.x + this.pos.x - this.radius) * this.cam.scale, (this.cam.pos.y + this.pos.y - this.radius) * this.cam.scale, this.pagesAndFilesCanvas.width * this.cam.scale, this.pagesAndFilesCanvas.height * this.cam.scale);
-        if(settings.showDebugCircles) {
+        //c.drawImage(icons, i.x, i.y, i.w, i.h, 
+        //(this.cam.pos.x + this.pos.x)*this.cam.scale - size/2, (this.cam.pos.y + this.pos.y)*this.cam.scale - size/2, size, size);
+        // Render a green circle around us
+        if (settings.showDebugCircles) {
             c.fillStyle = "rgba(255,255,255,0.2)";
             c.beginPath();
             c.arc(screenP.x, screenP.y, this.totalRadius * this.cam.scale, 0, 2 * Math.PI);
@@ -185,10 +177,9 @@ var HostNode = (function (_super) {
             c.stroke();
             c.closePath();
         }
-        if(this.isLoading) {
+        if (this.isLoading)
             this.loadingAnim.render(c, screenP.x - 14 * this.cam.scale, screenP.y - 14 * this.cam.scale, 28 * this.cam.scale, 28 * this.cam.scale);
-        }
-        if(this.isMouseOver) {
+        if (this.isMouseOver) {
             var pp = this.pos.copy(Helpers.p2).add(this.cam.pos).scale(this.cam.scale);
             pp.x -= this.host.length * 2;
             pp.y += 2 * this.cam.scale;
@@ -199,6 +190,13 @@ var HostNode = (function (_super) {
             c.fillText(this.host, pp.x, pp.y - 1);
             c.fillStyle = "white";
             c.fillText(this.host, pp.x, pp.y);
+            // Render a green circle around us
+            //c.fillStyle = "rgba(255,255,255,0.2)";
+            //c.beginPath();
+            //c.arc(screenP.x, screenP.y, this.totalRadius * this.cam.scale, 0, 2 * Math.PI);
+            //c.fill();
+            //c.stroke();  
+            // Render a circle around us            
             c.beginPath();
             c.strokeStyle = "white";
             c.lineWidth = 1;
@@ -211,4 +209,3 @@ var HostNode = (function (_super) {
     };
     return HostNode;
 })(PhysicsRenderNode);
-//@ sourceMappingURL=HostNode.js.map

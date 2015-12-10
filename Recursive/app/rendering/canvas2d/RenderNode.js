@@ -16,15 +16,14 @@ var RenderNode = (function () {
         this.pos.y = y;
     };
     RenderNode.prototype.render = function (c) {
-        if(!this.icon) {
+        if (!this.icon)
             return;
-        }
-        if(this.inCameraSpace) {
+        if (this.inCameraSpace) {
             c.drawImage(this.icon, (this.pos.x + this.cam.pos.x - this.icon.width / 2) * this.cam.scale, (this.pos.y + this.cam.pos.y - this.icon.height / 2) * this.cam.scale, this.cam.scale * this.icon.width, this.cam.scale * this.icon.height);
-        } else {
+        }
+        else {
             c.drawImage(this.icon, this.pos.x - this.icon.width / 2, this.pos.y - this.icon.height / 2);
         }
     };
     return RenderNode;
 })();
-//@ sourceMappingURL=RenderNode.js.map

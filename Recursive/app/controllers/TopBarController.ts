@@ -1,6 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
-declare function webkitRequestFullScreen();
+﻿declare function webkitRequestFullScreen();
 
 class TopBarController {
 

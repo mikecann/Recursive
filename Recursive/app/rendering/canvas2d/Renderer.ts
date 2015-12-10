@@ -1,6 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
-class Renderer {
+﻿class Renderer {
 
     canvas: HTMLCanvasElement;
     graph: CrawlGraph;
@@ -10,7 +8,7 @@ class Renderer {
     physics: Physics;
     lastFrameTime: number;
     mouseOverNode: HostNode;
-    isRendering: bool = true;
+    isRendering: boolean = true;
 
     constructor (canvasId: string, graph: CrawlGraph) {
 
@@ -39,7 +37,7 @@ class Renderer {
             this.canvas.height = window.innerHeight;
         }, false);
 
-        webkitRequestAnimationFrame(() =>this.draw());
+        requestAnimationFrame(() =>this.draw());
         this.reset();
     }
 
@@ -94,7 +92,7 @@ class Renderer {
         return null;
     }
 
-    private onMouseUp(e) : bool {
+    private onMouseUp(e) : boolean {
 
         // left
 
@@ -192,7 +190,7 @@ class Renderer {
             }
         }
 
-        webkitRequestAnimationFrame(() =>this.draw());
+        requestAnimationFrame(() =>this.draw());
         stats.end();
     }
 

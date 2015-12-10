@@ -1,17 +1,16 @@
+/// <reference path="../../app.ts" />
 var SettingsModalController = (function () {
     function SettingsModalController(elementId) {
         var _this = this;
         this.view = $("#" + elementId);
-        this.view.find('#saveBtn').click(function () {
-            return _this.save();
-        });
+        this.view.find('#saveBtn').click(function () { return _this.save(); });
         $("#userFilesRegexTip").tooltip();
     }
     SettingsModalController.prototype.open = function () {
         $('#maxDepthInp').attr('value', settings.maxCrawlDepth);
-        $("#showFPSChk").attr('checked', settings.showFPS);
-        $("#removeDuplicateFilesChk").attr('checked', settings.removeDuplicateFiles);
-        $("#showDebugCirclesChk").attr('checked', settings.showDebugCircles);
+        $("#showFPSChk").attr('checked', settings.showFPS + "");
+        $("#removeDuplicateFilesChk").attr('checked', settings.removeDuplicateFiles + "");
+        $("#showDebugCirclesChk").attr('checked', settings.showDebugCircles + "");
         $('#userFilesRegex').attr('value', settings.userFilesRegex);
         this.view.find('.modal-body');
         this.view.modal();
@@ -28,4 +27,3 @@ var SettingsModalController = (function () {
     };
     return SettingsModalController;
 })();
-//@ sourceMappingURL=SettingsModalController.js.map

@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts">
-
+﻿
 class Branch {
     parent: Branch;
     depth: number;
@@ -13,13 +12,13 @@ class Branch {
 class HeroController {
 
     view: JQuery;
-    isRendering: bool = true;
+    isRendering: boolean = true;
     canvas: HTMLCanvasElement;
     lastTime: number;
     tree: Branch;
     randVarienceStrength: number;
     maxDepth: number;
-
+    
     constructor (heroId: string) {
 
         // Grab the url and slam it in as the search 
@@ -47,7 +46,7 @@ class HeroController {
         this.tree = this.getBranch(0);
     
         this.lastTime = (new Date()).getTime();
-        webkitRequestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             this.randVarienceStrength = 1 + Math.random();
             this.maxDepth =10;
             this.renderTree();   
@@ -159,7 +158,8 @@ class HeroController {
 
         ctx.restore();
 
-        webkitRequestAnimationFrame(()=> this.renderTree());
-    }
+        requestAnimationFrame(()=> this.renderTree());
+    }    
+   
 
 }

@@ -1,5 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
+﻿
 class Anim
 {
     frameTime: number = 1000 / 15;

@@ -1,5 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
+﻿
 class FileNode extends RenderNode {
 
     page: Crawler;

@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-    
+﻿    
 enum CrawlerSate {
     INITTED,
     CRAWLING,
@@ -26,7 +25,7 @@ class Crawler {
     depth = 0;
     url: string;
     parsedUrl: URI;
-    handled: bool = false;
+    handled: boolean = false;
 
     constructor (url: string) {
         this.url = url;
@@ -37,13 +36,13 @@ class Crawler {
         this.state = CrawlerSate.CRAWLING;      
         this.crawlStarted.dispatch(this);
         this.handled = false;
-        //console.log("Crawling: " + url);        
+        console.log("Crawling: " + this.url);        
         $.ajax(this.url, {
             type: 'GET',
             url: this.url,
             error: (jqXHR, textStatus) =>this.onError(textStatus),
             complete: (data, status) => status == "success" ? this.onSuccess(data) : this.onError("fail whale"),
-            progress: (e) => this.onProgress(e)
+            //progress: (e) => this.onProgress(e)
         });
     }
 

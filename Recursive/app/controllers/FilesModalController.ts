@@ -1,6 +1,5 @@
-/// <reference path="../../app.ts">
-
 declare function saveAs(data: any, filename: string);
+declare var JSZipUtils : any;
 
 class FilesModalController {
 
@@ -29,7 +28,7 @@ class FilesModalController {
 
     open(crawler: Crawler) {
         this.crawler = crawler;
-        var imgSrc = "http://g.etfv.co/http://" + encodeURI(crawler.parsedUrl.host);
+        var imgSrc = "http://" + encodeURI(crawler.parsedUrl.host);
         this.filesModal.find(".modal-header h3").html("<img src=\""+imgSrc+"\" width=\"19\" height=\"19\" /> "+crawler.parsedUrl.host);
         this.updateFileList();
         (<any>this.filesModal).modal();
@@ -92,8 +91,8 @@ class FilesModalController {
         $('#downloadAllBtn').hide();
         $('#openPage').hide();
         var progbar = $('#downloadProgress').show();
-
-        var fs = new zip.fs.FS();
+        
+        var zip = new JSZip();
         var count = this.selectedFiles.length;
         var remaining: CrawlerFile[] = [];  
         
@@ -107,39 +106,58 @@ class FilesModalController {
             bar.css("width",prog+"%");
 
             if (remaining.length == 0) {
-                bar.addClass("bar-success");                
-                fs.exportBlob(blob=>{
-                    saveAs(blob, this.crawler.parsedUrl.host + ".zip");
-                    $('#downloadAllBtn').show();
-                    $('#openPage').show();
-                    bar.removeClass("bar-success");
-                    var progbar = $('#downloadProgress').hide();
-                }, (indx, maxIndx) =>{
-                    var prog = Math.round((indx / maxIndx) * 100);
-                    bar.html("Compressing ("+prog+"%)");
-                });
+                bar.addClass("bar-success");        
+                
+                var zipBlob = zip.generate({type:"blob"});
+                saveAs(zipBlob, "files.zip");
+                
+                $('#downloadAllBtn').show();
+                $('#openPage').show();
+                bar.removeClass("bar-success");
+                var progbar = $('#downloadProgress').hide();
+                        
+                // fs.exportBlob(blob=>{
+                //     saveAs(blob, this.crawler.parsedUrl.host + ".zip");
+                //     $('#downloadAllBtn').show();
+                //     $('#openPage').show();
+                //     bar.removeClass("bar-success");
+                //     var progbar = $('#downloadProgress').hide();
+                // }, (indx, maxIndx) =>{
+                //     var prog = Math.round((indx / maxIndx) * 100);
+                //     bar.html("Compressing ("+prog+"%)");
+                // });
             }
         };
         
-        this.selectedFiles.forEach(f=>
-        {            
+        var loadAndAdd = (f:CrawlerFile) => {
+            console.log("requesting file", f);
             var request = new XMLHttpRequest();
             remaining.push(f);
 			request.addEventListener("load", ()=>
 			{
 				var size = Number(request.getResponseHeader("Content-Length"));
-                var blob = new Blob([request.response]);
-				try { fs.root.addBlob(f.filename, blob); } catch (e) { }
+                //var blob = new Blob([request.response]);
+				try { 
+                    var res = request.response || request.responseText;
+                    console.log("adding file", f.filename, res);
+                    zip = zip.file(f.filename, res, {binary: true});
+                } catch (e) {
+                    console.error("Errorr adding file to zip", f.filename, e)
+                 }
 				updateProg(f);                
 			}, false);
 			request.addEventListener("error", () => {
 			    updateProg(f);
 			}, false);
 			request.open("GET", f.fileUrl);
-			request.responseType = "blob";
+			request.responseType = "arraybuffer";
 			request.send();
-        });     
+        };             
+        
+        this.selectedFiles.forEach(loadAndAdd);            
     }
+    
+    
 
     openPage() {
         window.open(this.crawler.url, "_blank");

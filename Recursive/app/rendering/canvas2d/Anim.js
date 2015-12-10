@@ -9,11 +9,11 @@ var Anim = (function () {
     }
     Anim.prototype.update = function (delta) {
         this.timeSinceLastFrame += delta;
-        if(this.timeSinceLastFrame > this.frameTime) {
+        if (this.timeSinceLastFrame > this.frameTime) {
             this.timeSinceLastFrame = 0;
             this.currentFrame++;
             var offx = this.currentFrame * this.frameW;
-            if(offx >= this.img.width) {
+            if (offx >= this.img.width) {
                 this.currentFrame = 0;
             }
         }
@@ -24,4 +24,3 @@ var Anim = (function () {
     };
     return Anim;
 })();
-//@ sourceMappingURL=Anim.js.map

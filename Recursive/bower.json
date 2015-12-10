@@ -1,0 +1,23 @@
+{
+  "name": "Recursive",
+  "homepage": "https://github.com/mikecann/Recursive",
+  "authors": [
+    "Mike Cann <mike@thebroth.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jszip": "~2.5.0",
+    "jszip-utils": "~0.0.2"
+  }
+}

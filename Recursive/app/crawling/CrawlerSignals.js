@@ -14,12 +14,8 @@ var CrawlerSignal = (function () {
         this.onceHandlers.push(handler);
     };
     CrawlerSignal.prototype.dispatch = function (crawler) {
-        this.handlers.forEach(function (h) {
-            return h(crawler);
-        });
-        this.onceHandlers.forEach(function (h) {
-            return h(crawler);
-        });
+        this.handlers.forEach(function (h) { return h(crawler); });
+        this.onceHandlers.forEach(function (h) { return h(crawler); });
         this.onceHandlers = [];
     };
     return CrawlerSignal;
@@ -40,14 +36,9 @@ var CrawlerFileSignal = (function () {
         this.onceHandlers.push(handler);
     };
     CrawlerFileSignal.prototype.dispatch = function (f) {
-        this.handlers.forEach(function (h) {
-            return h(f);
-        });
-        this.onceHandlers.forEach(function (h) {
-            return h(f);
-        });
+        this.handlers.forEach(function (h) { return h(f); });
+        this.onceHandlers.forEach(function (h) { return h(f); });
         this.onceHandlers = [];
     };
     return CrawlerFileSignal;
 })();
-//@ sourceMappingURL=CrawlerSignals.js.map

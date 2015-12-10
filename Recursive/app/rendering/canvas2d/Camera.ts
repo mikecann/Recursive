@@ -1,5 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
+﻿
 class Camera {
 
     scale: number = 1;
@@ -49,15 +48,17 @@ class Camera {
             }
         });
         this.canvas.bind('mousewheel', (event) =>
-        {
+        {            
             event.originalEvent.preventDefault();
+
+            var origE = <any>event.originalEvent;
 
             //var mx = event.originalEvent.pageX;
             //var my = event.originalEvent.pageY;
-            var delta = (event.originalEvent.wheelDelta / 1000)*(this.scale);
+            var delta = (origE.wheelDelta / 1000)*(this.scale);
 
-            this.scalePoint.x = event.originalEvent.pageX;
-            this.scalePoint.y = event.originalEvent.pageY;
+            this.scalePoint.x = origE.pageX;
+            this.scalePoint.y = origE.pageY;
             
             //var beforeMX = (mx / this.targetScale)+this.pos.x;
             //var beforeMY = (my / this.targetScale)+this.pos.y;

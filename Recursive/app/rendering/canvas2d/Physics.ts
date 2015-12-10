@@ -1,6 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
-var b2internal = Box2D.Common.b2internal;
+﻿var b2internal = Box2D.Common.b2internal;
 var b2Settings = Box2D.Common.b2Settings;
 var b2Mat22 = Box2D.Common.Math.b2Mat22;
 var b2Mat33 = Box2D.Common.Math.b2Mat33;
@@ -49,7 +47,7 @@ var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
 
 // I dont like how this shit works so i re-jiggleypuffed it
-b2ContactFilter.prototype.ShouldCollide = function (fixtureA, fixtureB) : bool {
+b2ContactFilter.prototype.ShouldCollide = function (fixtureA, fixtureB) : boolean {
     if (!fixtureA.m_body || !fixtureA.m_body.m_userData || !fixtureB.m_body || !fixtureB.m_body.m_userData) return false;
 
     /*
@@ -90,7 +88,7 @@ class Physics {
 	    this.world.SetDebugDraw(debugDraw);
     }
 
-    createCircularBody(x:number, y:number, radius:number, physicsGroup:number, isStatic:bool=false): any {
+    createCircularBody(x:number, y:number, radius:number, physicsGroup:number, isStatic=false): any {
         var fix = new b2FixtureDef;
         fix.density = 1;
 	    fix.restitution = 0.5;

@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 class CrawlGraph {
 
     root: Crawler;
@@ -120,13 +119,13 @@ class CrawlGraph {
     }
 
     getAllCrawlers(): Crawler[] {
-        var c = new Crawler[];
+        var c = [];
         for (var key in this.allCrawlers) c.push(<Crawler>this.allCrawlers[key]);
         return c;
     }
 
     getAllCrawlersForHost(host: string) {
-        var a = new Crawler[];
+        var a = [];
         this.getAllCrawlers().forEach(c=> (!c.parsedUrl || c.parsedUrl.host != host)?0:a.push(c) );
         return a;
     }

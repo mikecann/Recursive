@@ -1,10 +1,9 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 class CrawlingParserResult {
-    files = new string[];
-    links = new string[];
-    userRegex = new string[];
-    mailtos = new string[];
+    files: string[] = [];
+    links: string[] = [];
+    userRegex: string[] = [];
+    mailtos: string[] = [];
 }
 
 class CrawlingResultParser {
@@ -28,7 +27,7 @@ class CrawlingResultParser {
 
     private parseForFilesAndLinks(c:Crawler, r:CrawlingParserResult) {
 
-        var links = new string[];
+        var links: string[] = [];
 
         // Grab all HREF links
         var results = c.pageHTML.match(/href\s*=\s*"([^"]*)/g);

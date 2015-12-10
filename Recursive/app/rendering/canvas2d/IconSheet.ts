@@ -59,7 +59,7 @@ class Iconsheet {
         this.tiles[host] = tg;
 
         var i = new Image();
-        i.src = "http://g.etfv.co/http://" + encodeURI(host);
+        i.src = "http://" + encodeURI(host);
         i.onload = (e) => this.addIcon(tg,i);
 
         //console.log("Loading host icon: "+i.src);
@@ -67,14 +67,14 @@ class Iconsheet {
         return tg;
     }    
 
-    private addIcon(tg:IconGroup,icon: HTMLImageElement, style?:string="circle") {        
+    private addIcon(tg:IconGroup,icon: HTMLImageElement, style:string="circle") {        
         tg.none = this.addTile("", icon, style);
         tg.orange = this.addTile("orange", icon, style);
         tg.red = this.addTile("#ff0000", icon, style);
         tg.green = this.addTile("#00ff00", icon, style);   
     }
 
-    private addTile(color:string, icon: HTMLImageElement, style?:string="circle"): Icon {
+    private addTile(color:string, icon: HTMLImageElement, style:string="circle"): Icon {
 
         var ty = Math.floor(this.tileIndex / (this.sheetWidth / this.iconWidth));
         var tx = this.tileIndex - (ty * (this.sheetWidth / this.iconWidth));                

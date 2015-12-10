@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 enum CrawlerFileTypes {
     IMAGE,
     BINARY,
@@ -35,7 +34,7 @@ class CrawlerFile {
         }
     }
 
-    private is(types) : bool {
+    private is(types) : boolean {
         return types.indexOf(this.extension) != -1;
     }
 

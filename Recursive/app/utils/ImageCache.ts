@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 class ImageCache {
 
     circleRad: number = 8;
@@ -41,8 +40,13 @@ class ImageCache {
         this.files[CrawlerFileTypes.SOUND] = "images/music.png";
 
         this.unknown = this.getImage("images/help.png",false);   
+        this.getImage("images/image.png", false);
+        this.getImage("images/document-text.png", false);
+        this.getImage("images/film.png", false);
+        this.getImage("images/box-document.png", false);
+        this.getImage("images/music.png", false);
     }
-
+    
     getImageForFileType(file: CrawlerFile) : HTMLImageElement {
         var i = this.files[file.extension];
         if (i) return this.getImage(i,false);
@@ -51,13 +55,16 @@ class ImageCache {
         return this.unknown;
     }
 
-    getImage(src:string, circleIt:bool=true): HTMLImageElement {
+    getImage(src:string, circleIt:boolean=true): HTMLImageElement {
         var id = src+(circleIt?"_circle":"");
         var i = this.cache[id];
         if (!i) {
             i = new Image();
             i.src = src;
-            if (circleIt) i.onload = (e) => this.circleIt(i);
+            if (circleIt) i.onload = (e) => {
+                this.circleIt(i);
+                i.onload = null;
+            }
             this.cache[id] = i;
         }
         return i;

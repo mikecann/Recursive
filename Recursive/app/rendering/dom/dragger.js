@@ -19,18 +19,18 @@ class Dragger {
         var isMouseDown = false;
         var startDownPoint : Point;
         var containerStartPos: Point;
-        this.canvas.mousedown((e) => { 
-            isMouseDown = true; 
+        this.canvas.mousedown((e) => {
+            isMouseDown = true;
             var o: any = this.container.offset();
-            startDownPoint = { x: e.pageX, y: e.pageY };            
+            startDownPoint = { x: e.pageX, y: e.pageY };
             containerStartPos = { x: o.left, y: o.top };
         });
-        this.canvas.mouseup((e) => { 
-            isMouseDown = false; 
+        this.canvas.mouseup((e) => {
+            isMouseDown = false;
             startDownPoint.x = containerStartPos.x = 0;
             startDownPoint.y = containerStartPos.y = 0;
         });
-        this.canvas.mousemove((e) => {  
+        this.canvas.mousemove((e) => {
             if (isMouseDown) {
                 var dx = e.pageX - startDownPoint.x;
                 var dy = e.pageY - startDownPoint.y;
@@ -51,4 +51,4 @@ class Dragger {
 
 }
 
-*/
+*/ 

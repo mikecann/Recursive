@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts">
-
+﻿
 class ContextMenuController {
 
     private layer: JQuery;

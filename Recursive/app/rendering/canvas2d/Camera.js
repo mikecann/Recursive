@@ -14,10 +14,7 @@ var Camera = (function () {
         var lastPos = new TSM.vec2();
         this.canvas.mousedown(function (e) {
             isMouseDown = true;
-            startDownPoint = new TSM.vec2([
-                e.pageX, 
-                e.pageY
-            ]);
+            startDownPoint = new TSM.vec2([e.pageX, e.pageY]);
             containerStartPos = _this.pos.copy();
             lastPos = startDownPoint.copy();
             _this.distanceMouseMovedSinceButtonWentDown = 0;
@@ -30,7 +27,7 @@ var Camera = (function () {
             _this.vel = lastDelta.copy().scale(2);
         });
         this.canvas.mousemove(function (e) {
-            if(isMouseDown) {
+            if (isMouseDown) {
                 var dx = e.pageX - startDownPoint.x;
                 var dy = e.pageY - startDownPoint.y;
                 lastDelta.x = e.pageX - lastPos.x;
@@ -44,16 +41,23 @@ var Camera = (function () {
         });
         this.canvas.bind('mousewheel', function (event) {
             event.originalEvent.preventDefault();
-            var delta = (event.originalEvent.wheelDelta / 1000) * (_this.scale);
-            _this.scalePoint.x = event.originalEvent.pageX;
-            _this.scalePoint.y = event.originalEvent.pageY;
+            var origE = event.originalEvent;
+            //var mx = event.originalEvent.pageX;
+            //var my = event.originalEvent.pageY;
+            var delta = (origE.wheelDelta / 1000) * (_this.scale);
+            _this.scalePoint.x = origE.pageX;
+            _this.scalePoint.y = origE.pageY;
+            //var beforeMX = (mx / this.targetScale)+this.pos.x;
+            //var beforeMY = (my / this.targetScale)+this.pos.y;
             _this.targetScale += delta;
-            if(_this.targetScale < 0.01) {
+            if (_this.targetScale < 0.01)
                 _this.targetScale = 0.01;
-            }
-            if(_this.targetScale > 2) {
+            if (_this.targetScale > 2)
                 _this.targetScale = 2;
-            }
+            //var afterMX = (mx / this.targetScale) + this.pos.x;
+            //var afterMY = (my / this.targetScale) + this.pos.y;
+            //this.targetOffset.x = (afterMX - beforeMX);
+            //this.targetOffset.y = (afterMY - beforeMY);
         });
     }
     Camera.prototype.tick = function () {
@@ -62,7 +66,8 @@ var Camera = (function () {
         this.scale -= d;
         var after = this.scalePoint.copy().scale(1 / this.scale).add(this.pos);
         this.pos.add(after.subtract(before));
+        // this.pos.add(this.vel);
+        //this.vel.scale(0.8);
     };
     return Camera;
 })();
-//@ sourceMappingURL=Camera.js.map

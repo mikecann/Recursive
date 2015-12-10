@@ -1,6 +1,4 @@
-﻿/// <reference path="../../../app.ts" />
-
-
+﻿
 class HostNode extends PhysicsRenderNode {
 
     host: string;
@@ -13,17 +11,17 @@ class HostNode extends PhysicsRenderNode {
     totalRadius: number;
     jointToParent: any;
     pagesAndFilesCanvas: HTMLCanvasElement;
-    pagesAndFilesIsDirty: bool = false;
-    isLoading: bool = false;
+    pagesAndFilesIsDirty: boolean = false;
+    isLoading: boolean = false;
     loadingAnim: Anim;
-    someChildrenAreLoading: bool = false;
+    someChildrenAreLoading: boolean = false;
     
     constructor (crawler: Crawler, parentNode: HostNode, renderer: Renderer) {
         super(renderer, crawler.depth, crawler.parent == null);
         this.crawler = crawler;
         this.host = crawler.parsedUrl.host;
         this.parentNode = parentNode;
-        this.icon = images.getImage("http://g.etfv.co/http://" + encodeURI(this.host));
+        this.icon = images.getImage("http://www.google.com/s2/favicons?domain=" + encodeURI(this.host));
         this.pagesAndFilesCanvas = <HTMLCanvasElement>document.createElement("canvas");
         this.loadingAnim = new Anim(images.getImage("images/loader4.png", false), 128, 128);
 

@@ -45,10 +45,16 @@ var b2TimeStep = Box2D.Dynamics.b2TimeStep;
 var b2World = Box2D.Dynamics.b2World;
 var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+// I dont like how this shit works so i re-jiggleypuffed it
 b2ContactFilter.prototype.ShouldCollide = function (fixtureA, fixtureB) {
-    if(!fixtureA.m_body || !fixtureA.m_body.m_userData || !fixtureB.m_body || !fixtureB.m_body.m_userData) {
+    if (!fixtureA.m_body || !fixtureA.m_body.m_userData || !fixtureB.m_body || !fixtureB.m_body.m_userData)
         return false;
-    }
+    /*
+    var nodeA : HostNode = fixtureA.m_body.m_userData;
+    var nodeB : HostNode = fixtureB.m_body.m_userData;
+    if (nodeA.childHostNodes.length != 0 && nodeB.childHostNodes.length != 0) return true;
+    return nodeA.parentNode == nodeB.parentNode;
+    */
     var nodeA = fixtureA.m_body.m_userData;
     var nodeB = fixtureB.m_body.m_userData;
     return nodeA.parentNode == nodeB.parentNode;
@@ -67,21 +73,17 @@ var Physics = (function () {
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
     }
-    Physics.SCALE = 30;
-    Physics.STEP = 20;
-    Physics.TIMESTEP = 1 / 20;
     Physics.prototype.createCircularBody = function (x, y, radius, physicsGroup, isStatic) {
-        if (typeof isStatic === "undefined") { isStatic = false; }
-        var fix = new b2FixtureDef();
+        if (isStatic === void 0) { isStatic = false; }
+        var fix = new b2FixtureDef;
         fix.density = 1;
         fix.restitution = 0.5;
         fix.shape = new b2CircleShape(radius / Physics.SCALE);
         fix.filter.groupIndex = physicsGroup;
-        var def = new b2BodyDef();
+        var def = new b2BodyDef;
         def.linearDamping = 4;
-        if(!isStatic) {
+        if (!isStatic)
             def.type = b2Body.b2_dynamicBody;
-        }
         def.position.x = x;
         def.position.y = y;
         def.fixedRotation = true;
@@ -100,8 +102,21 @@ var Physics = (function () {
         return this.world.CreateJoint(jointDef);
     };
     Physics.prototype.update = function () {
+        //var now = Date.now();
+        //var dt = now - this.lastTimestamp;
+        //this.fixedTimestepAccumulator += dt;
+        //this.lastTimestamp = now;
         this.world.Step(1 / 60, 1, 1);
+        //this.world.Step(this.TIMESTEP, 10, 10);
+        //this.world.m_debugDraw.m_sprite.graphics.clear();
+        //this.world.DrawDebugData();
+        //while (this.fixedTimestepAccumulator >= Physics.STEP) {
+        // this.world.Step(Physics.TIMESTEP, 10, 10);            
+        //this.fixedTimestepAccumulator -= Physics.STEP;
+        // }
     };
+    Physics.SCALE = 30;
+    Physics.STEP = 20;
+    Physics.TIMESTEP = 1 / 20;
     return Physics;
 })();
-//@ sourceMappingURL=Physics.js.map

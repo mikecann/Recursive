@@ -1,8 +1,7 @@
-/// <reference path="lib/jquery/jquery.d.ts" />
+/// <reference path="./typings/jquery/jquery.d.ts" />
 /// <reference path="lib/jqueryplugins/jqmodal.d.ts" />
 /// <reference path="lib/jqueryplugins/jqcontextmenu.d.ts" />
 /// <reference path="lib/stats/stats.d.ts" />
-/// <reference path="lib/zipjs/zipjs.d.ts" />
 /// <reference path="lib/tsm/tsm-0.6.d.ts" />
 /// <reference path="lib/box2dweb/box2dweb.d.ts" />
 /// <reference path="lib/jqueryplugins/jqplugins.d.ts" />
@@ -35,6 +34,8 @@
 /// <reference path="app/rendering/canvas2d/PageNode.ts" />
 /// <reference path="app/rendering/canvas2d/Anim.ts" />
 
+/// <reference path="./typings/tsd.d.ts" />
+
 declare var chrome: any;
 declare function webkitRequestAnimationFrame(cb:()=>void);
 
@@ -58,7 +59,6 @@ var settings = {
 };
 
 window.onload = () => {
-
     chrome.storage.sync.get(null, (o) =>{
         for (var key in o) settings[key] = o[key];
         stats.domElement.style.visibility = settings.showFPS ? 'visible' : 'hidden';
@@ -67,7 +67,9 @@ window.onload = () => {
     $(".alert-container").disableSelection();
 
     // Prevent all forms from submitting
-    $("form").each((i, e: HTMLFormElement) => e.onsubmit = () => false);  
+    var forms = <NodeListOf<HTMLFormElement>>document.querySelectorAll("form");
+    for (var i = 0; i < forms.length; i++)
+        forms[i].onsubmit = (e) => false;
        
     // Align top-left
     stats = new Stats();
@@ -78,7 +80,7 @@ window.onload = () => {
     stats.domElement.style.visibility = 'hidden';
     document.body.appendChild( stats.domElement );     
 
-    zip.workerScriptsPath = "/lib/zipjs/";
+    //zip.workerScriptsPath = "/lib/zipjs/";
     
     graph = new CrawlGraph();
     renderer = new Renderer("mainRenderCanvas",graph);

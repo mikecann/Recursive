@@ -12,9 +12,9 @@ class SettingsModalController {
     
     open() {        
         $('#maxDepthInp').attr('value', settings.maxCrawlDepth);
-        $("#showFPSChk").attr('checked',settings.showFPS);
-        $("#removeDuplicateFilesChk").attr('checked',settings.removeDuplicateFiles);
-        $("#showDebugCirclesChk").attr('checked',settings.showDebugCircles);
+        $("#showFPSChk").attr('checked',settings.showFPS + "");
+        $("#removeDuplicateFilesChk").attr('checked',settings.removeDuplicateFiles + "");
+        $("#showDebugCirclesChk").attr('checked',settings.showDebugCircles + "");
         $('#userFilesRegex').attr('value', settings.userFilesRegex);  
 
         this.view.find('.modal-body');

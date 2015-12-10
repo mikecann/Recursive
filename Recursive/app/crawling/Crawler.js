@@ -1,14 +1,9 @@
 var CrawlerSate;
 (function (CrawlerSate) {
-    CrawlerSate._map = [];
-    CrawlerSate._map[0] = "INITTED";
-    CrawlerSate.INITTED = 0;
-    CrawlerSate._map[1] = "CRAWLING";
-    CrawlerSate.CRAWLING = 1;
-    CrawlerSate._map[2] = "CRAWL_SUCCESS";
-    CrawlerSate.CRAWL_SUCCESS = 2;
-    CrawlerSate._map[3] = "CRAWL_ERROR";
-    CrawlerSate.CRAWL_ERROR = 3;
+    CrawlerSate[CrawlerSate["INITTED"] = 0] = "INITTED";
+    CrawlerSate[CrawlerSate["CRAWLING"] = 1] = "CRAWLING";
+    CrawlerSate[CrawlerSate["CRAWL_SUCCESS"] = 2] = "CRAWL_SUCCESS";
+    CrawlerSate[CrawlerSate["CRAWL_ERROR"] = 3] = "CRAWL_ERROR";
 })(CrawlerSate || (CrawlerSate = {}));
 var Crawler = (function () {
     function Crawler(url) {
@@ -33,18 +28,12 @@ var Crawler = (function () {
         this.state = CrawlerSate.CRAWLING;
         this.crawlStarted.dispatch(this);
         this.handled = false;
+        console.log("Crawling: " + this.url);
         $.ajax(this.url, {
             type: 'GET',
             url: this.url,
-            error: function (jqXHR, textStatus) {
-                return _this.onError(textStatus);
-            },
-            complete: function (data, status) {
-                return status == "success" ? _this.onSuccess(data) : _this.onError("fail whale");
-            },
-            progress: function (e) {
-                return _this.onProgress(e);
-            }
+            error: function (jqXHR, textStatus) { return _this.onError(textStatus); },
+            complete: function (data, status) { return status == "success" ? _this.onSuccess(data) : _this.onError("fail whale"); },
         });
     };
     Crawler.prototype.destroy = function () {
@@ -76,12 +65,10 @@ var Crawler = (function () {
         this.crawlComplete.dispatch(this);
     };
     Crawler.prototype.onProgress = function (e) {
-        if(e.total == 0) {
+        if (e.total == 0)
             this.progress = 100;
-        } else {
+        else
             this.progress = (e.loaded / e.total) * 100;
-        }
     };
     return Crawler;
 })();
-//@ sourceMappingURL=Crawler.js.map

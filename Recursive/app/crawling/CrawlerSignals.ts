@@ -1,5 +1,4 @@
-﻿/// <reference path="../../app.ts" />
-
+﻿
 class CrawlerSignal {
 
     handlers: { (crawler:Crawler): void; }[] = [];

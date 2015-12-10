@@ -1,10 +1,8 @@
 var ImageCache = (function () {
     function ImageCache() {
         this.circleRad = 8;
-        this.cache = {
-        };
-        this.files = {
-        };
+        this.cache = {};
+        this.files = {};
         this.files["psd"] = "images/blue-document-photoshop-image.png";
         this.files["png"] = "images/image.png";
         this.files["gif"] = "images/image.png";
@@ -33,38 +31,41 @@ var ImageCache = (function () {
         this.files[CrawlerFileTypes.BINARY] = "images/box-document.png";
         this.files[CrawlerFileTypes.SOUND] = "images/music.png";
         this.unknown = this.getImage("images/help.png", false);
+        this.getImage("images/image.png", false);
+        this.getImage("images/document-text.png", false);
+        this.getImage("images/film.png", false);
+        this.getImage("images/box-document.png", false);
+        this.getImage("images/music.png", false);
     }
     ImageCache.prototype.getImageForFileType = function (file) {
         var i = this.files[file.extension];
-        if(i) {
+        if (i)
             return this.getImage(i, false);
-        }
         i = this.files[file.type];
-        if(i) {
+        if (i)
             return this.getImage(i, false);
-        }
         return this.unknown;
     };
     ImageCache.prototype.getImage = function (src, circleIt) {
-        if (typeof circleIt === "undefined") { circleIt = true; }
         var _this = this;
+        if (circleIt === void 0) { circleIt = true; }
         var id = src + (circleIt ? "_circle" : "");
         var i = this.cache[id];
-        if(!i) {
+        if (!i) {
             i = new Image();
             i.src = src;
-            if(circleIt) {
+            if (circleIt)
                 i.onload = function (e) {
-                    return _this.circleIt(i);
+                    _this.circleIt(i);
+                    i.onload = null;
                 };
-            }
             this.cache[id] = i;
         }
         return i;
     };
     ImageCache.prototype.circleIt = function (i) {
         var r = this.circleRad;
-        var c = (document.createElement("canvas")).getContext("2d");
+        var c = document.createElement("canvas").getContext("2d");
         c.canvas.width = r * 2;
         c.canvas.height = r * 2;
         c.beginPath();
@@ -74,8 +75,8 @@ var ImageCache = (function () {
         i.src = c.canvas.toDataURL();
     };
     ImageCache.prototype.shadeIt = function (i, shade, strength) {
-        if (typeof strength === "undefined") { strength = 0.5; }
-        var c = (document.createElement("canvas")).getContext("2d");
+        if (strength === void 0) { strength = 0.5; }
+        var c = document.createElement("canvas").getContext("2d");
         c.canvas.width = i.width;
         c.canvas.height = i.height;
         c.drawImage(i, 0, 0, i.width, i.height);
@@ -89,4 +90,3 @@ var ImageCache = (function () {
     };
     return ImageCache;
 })();
-//@ sourceMappingURL=ImageCache.js.map

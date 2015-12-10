@@ -1,14 +1,12 @@
-﻿/// <reference path="../../../app.ts" />
-
-class RenderNode {
+﻿class RenderNode {
 
     renderer: Renderer;
     cam: Camera;
     pos = new TSM.vec2();
     icon: HTMLImageElement;
     scale: number=1;    
-    inCameraSpace: bool = true;
-    isMouseOver: bool = false;
+    inCameraSpace: boolean = true;
+    isMouseOver: boolean = false;
     radius: number = 16;    
     
     constructor (r:Renderer){
@@ -20,6 +18,7 @@ class RenderNode {
     update(deta:number) 
     {
     }
+    
 
     updatePosition(x:number, y:number) {
         this.pos.x = x;
@@ -29,7 +28,7 @@ class RenderNode {
     render(c:CanvasRenderingContext2D) {      
         if(!this.icon) return;
         
-        if (this.inCameraSpace) {
+        if (this.inCameraSpace) {           
             c.drawImage(this.icon,
                 (this.pos.x + this.cam.pos.x - this.icon.width / 2) * this.cam.scale,
                 (this.pos.y + this.cam.pos.y - this.icon.height / 2) * this.cam.scale,

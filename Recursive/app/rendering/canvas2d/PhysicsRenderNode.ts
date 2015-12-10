@@ -1,10 +1,8 @@
-﻿/// <reference path="../../../app.ts" />
-
-class PhysicsRenderNode extends RenderNode {
+﻿class PhysicsRenderNode extends RenderNode {
 
 	body: any;
 
-	constructor (r:Renderer, physicsGroup:number, isstatic:bool) {
+	constructor (r:Renderer, physicsGroup:number, isstatic:boolean) {
 		super(r);
 		this.body = r.physics.createCircularBody(0,0,this.radius,physicsGroup,isstatic);
 		this.updatePosition(this.pos.x, this.pos.y);
